@@ -72,6 +72,7 @@ export interface ConditionContent {
   metadata: ConditionMetadata;
   sections: Record<ConditionSectionId, ContentSection>;
   rawContent?: string; // Full MDX content
+  isLocaleSpecific?: boolean; // True if content exists in requested locale, false if falling back
 }
 
 /**

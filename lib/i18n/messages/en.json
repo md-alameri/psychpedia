@@ -91,6 +91,11 @@
     },
     "dosingHidden": {
       "message": "Dosing information is available to registered healthcare professionals."
+    },
+    "localeUnavailable": {
+      "title": "Content Not Available in Arabic",
+      "message": "This content is currently only available in English. We are working on Arabic translations and will update this page when available.",
+      "viewEnglish": "View English version"
     }
   }
 }

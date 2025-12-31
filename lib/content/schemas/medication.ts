@@ -73,6 +73,7 @@ export interface MedicationContent {
   metadata: MedicationMetadata;
   sections: Record<MedicationSectionId, ContentSection>;
   rawContent?: string; // Full MDX content
+  isLocaleSpecific?: boolean; // True if content exists in requested locale, false if falling back
 }
 
 /**

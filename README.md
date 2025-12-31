@@ -81,7 +81,7 @@ psychpedia-landing-v2/
 │       └── messages/      # Translation files
 │           ├── en.json
 │           └── ar.json
-├── middleware.ts          # Locale detection and routing
+├── proxy.ts              # Locale detection and routing
 └── tailwind.config.ts    # Tailwind configuration
 ```
 
@@ -120,7 +120,7 @@ curl -s http://localhost:3000/en | head -n 2
 # Expected: <html lang="en" dir="ltr">
 ```
 
-The locale is inferred from the URL path and set via a cookie in middleware, ensuring correct server-side rendering without client-side hacks.
+The locale is inferred from the URL path and set via a cookie in proxy, ensuring correct server-side rendering without client-side hacks.
 
 ## Styling
 

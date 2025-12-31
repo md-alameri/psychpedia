@@ -9,6 +9,7 @@ import ContentSection from '@/components/content/ContentSection';
 import MDXContent from '@/components/content/MDXContent';
 import MedicalDisclaimer from '@/components/content/MedicalDisclaimer';
 import ReportIssue from '@/components/content/ReportIssue';
+import LocaleUnavailableNotice from '@/components/content/LocaleUnavailableNotice';
 import { generateConditionStructuredData, generateArticleStructuredData } from '@/lib/content/structured-data';
 import { getCurrentUserRole } from '@/lib/content/gating';
 
@@ -69,7 +70,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
     notFound();
   }
   
-  const { metadata, sections, rawContent } = content;
+  const { metadata, sections, rawContent, isLocaleSpecific } = content;
   
   // Generate structured data
   const structuredData = generateConditionStructuredData(content, locale);
@@ -102,6 +103,15 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
             <p className="text-lg text-text-secondary mb-6">
               {metadata.description}
             </p>
+            
+            {/* Show notice if content is not available in requested locale */}
+            {!isLocaleSpecific && (
+              <LocaleUnavailableNotice
+                requestedLocale={locale}
+                contentType="condition"
+                slug={slug}
+              />
+            )}
             
             {metadata.publicSummary && (
               <div className="bg-background-off border border-border rounded-lg p-6 mb-6">

@@ -20,10 +20,12 @@ export async function loadCondition(
   // Try locale-specific first, then fallback to root
   let metadata: ConditionMetadata | null = null;
   let mdxData: { content: string; frontmatter: Record<string, unknown> } | null = null;
+  let isLocaleSpecific = false;
   
   // Check if locale-specific files exist
   if (existsSync(paths.metadataPath)) {
     metadata = readJSONFile<ConditionMetadata>(paths.metadataPath);
+    isLocaleSpecific = true;
   }
   if (existsSync(paths.mdxPath)) {
     mdxData = readMDXFile(paths.mdxPath);
@@ -32,6 +34,7 @@ export async function loadCondition(
   // Fallback to root files if locale-specific not found
   if (!metadata && paths.fallbackMetadataPath && existsSync(paths.fallbackMetadataPath)) {
     metadata = readJSONFile<ConditionMetadata>(paths.fallbackMetadataPath);
+    isLocaleSpecific = false;
   }
   if (!mdxData && paths.fallbackMdxPath && existsSync(paths.fallbackMdxPath)) {
     mdxData = readMDXFile(paths.fallbackMdxPath);
@@ -46,6 +49,7 @@ export async function loadCondition(
   // Validate metadata
   try {
     const validatedMetadata = validateConditionMetadata(metadata);
+    // Set the requested locale, not the content's original locale
     validatedMetadata.locale = locale;
     
     // Create sections structure
@@ -59,6 +63,7 @@ export async function loadCondition(
       metadata: validatedMetadata,
       sections,
       rawContent,
+      isLocaleSpecific, // Track if content is actually in requested locale
     };
   } catch (error) {
     console.error(`Error validating condition metadata for ${slug}:`, error);
@@ -78,10 +83,12 @@ export async function loadMedication(
   // Try locale-specific first, then fallback to root
   let metadata: MedicationMetadata | null = null;
   let mdxData: { content: string; frontmatter: Record<string, unknown> } | null = null;
+  let isLocaleSpecific = false;
   
   // Check if locale-specific files exist
   if (existsSync(paths.metadataPath)) {
     metadata = readJSONFile<MedicationMetadata>(paths.metadataPath);
+    isLocaleSpecific = true;
   }
   if (existsSync(paths.mdxPath)) {
     mdxData = readMDXFile(paths.mdxPath);
@@ -90,6 +97,7 @@ export async function loadMedication(
   // Fallback to root files if locale-specific not found
   if (!metadata && paths.fallbackMetadataPath && existsSync(paths.fallbackMetadataPath)) {
     metadata = readJSONFile<MedicationMetadata>(paths.fallbackMetadataPath);
+    isLocaleSpecific = false;
   }
   if (!mdxData && paths.fallbackMdxPath && existsSync(paths.fallbackMdxPath)) {
     mdxData = readMDXFile(paths.fallbackMdxPath);
@@ -104,6 +112,7 @@ export async function loadMedication(
   // Validate metadata
   try {
     const validatedMetadata = validateMedicationMetadata(metadata);
+    // Set the requested locale, not the content's original locale
     validatedMetadata.locale = locale;
     
     // Create sections structure
@@ -117,6 +126,7 @@ export async function loadMedication(
       metadata: validatedMetadata,
       sections,
       rawContent,
+      isLocaleSpecific, // Track if content is actually in requested locale
     };
   } catch (error) {
     console.error(`Error validating medication metadata for ${slug}:`, error);

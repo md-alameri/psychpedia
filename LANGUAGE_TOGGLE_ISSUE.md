@@ -119,7 +119,7 @@ According to next-intl documentation, `usePathname()` should return locale-agnos
 
 ## Related Configuration
 
-### Middleware Configuration (`middleware.ts`)
+### Proxy Configuration (`proxy.ts`)
 ```typescript
 const intlMiddleware = createMiddleware({
   locales,
