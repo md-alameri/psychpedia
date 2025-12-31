@@ -1,0 +1,65 @@
+{
+  "brand": {
+    "name": "Psychpedia",
+    "tagline": "A clinically grounded knowledge platform for mental health."
+  },
+  "nav": {
+    "about": "About",
+    "vision": "Vision",
+    "ethics": "Ethics",
+    "contact": "Contact"
+  },
+  "hero": {
+    "headline": "A clinically grounded knowledge platform for mental health.",
+    "subtitle": "Psychpedia provides evidence-based information for clinicians, medical students, and mental health professionals. Our content is curated, peer-reviewed, and designed to support clinical decision-making while prioritizing patient safety.",
+    "cta": "Join Waitlist"
+  },
+  "credibility": {
+    "title": "Built on evidence",
+    "evidence": {
+      "title": "Evidence-based content",
+      "description": "All information is sourced from peer-reviewed research, clinical guidelines, and established medical literature. We cite sources and maintain transparency about the strength of evidence."
+    },
+    "clinical": {
+      "title": "Clinical relevance",
+      "description": "Content is structured to support real-world clinical practice. We focus on practical applications, diagnostic criteria, treatment protocols, and patient management strategies."
+    },
+    "safety": {
+      "title": "Patient safety first",
+      "description": "Every piece of content is reviewed with patient safety as the primary consideration. We include appropriate warnings, contraindications, and emphasize the importance of professional clinical judgment."
+    }
+  },
+  "vision": {
+    "title": "Our vision",
+    "content": "Mental health knowledge should be accessible, accurate, and actionable. Yet clinicians and students often struggle to find reliable, up-to-date information that bridges the gap between research and practice.\n\nPsychpedia exists to solve this problem. We're building a comprehensive knowledge base that synthesizes the latest evidence with clinical wisdom, making it easier for healthcare professionals to make informed decisions.\n\nOur platform is designed for those who understand that mental health care requires nuance, context, and continuous learning. We respect the complexity of psychiatric practice and aim to support, not replace, clinical expertise."
+  },
+  "waitlist": {
+    "title": "Join the waitlist",
+    "subtitle": "Be notified when we launch.",
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email",
+      "required": "Email is required",
+      "invalid": "Please enter a valid email address"
+    },
+    "submit": "Subscribe",
+    "submitting": "Submitting...",
+    "privacy": "We respect your privacy. No spam. Unsubscribe anytime.",
+    "success": "Thank you. You've been added to the waitlist.",
+    "error": "Something went wrong. Please try again later."
+  },
+  "ethics": {
+    "title": "Ethics & Disclaimer",
+    "disclaimer": "Psychpedia is an educational resource designed to support healthcare professionals and students. All content is for informational purposes only and is not intended to be a substitute for professional medical advice, diagnosis, or treatment.\n\nAlways seek the advice of qualified health providers with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read on this platform.\n\nWhile we strive to provide accurate and up-to-date information, medical knowledge evolves continuously. Clinical judgment should always take precedence over any information found here."
+  },
+  "footer": {
+    "copyright": "© 2026 Psychpedia. All rights reserved.",
+    "contact": "Contact",
+    "email": "contact@psychpedia.com"
+  },
+  "meta": {
+    "title": "Psychpedia - Mental Health & Psychiatry Knowledge Base",
+    "description": "A clinically grounded knowledge platform for mental health. Evidence-based content for clinicians, medical students, and mental health professionals."
+  }
+}
+
