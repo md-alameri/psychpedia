@@ -42,16 +42,6 @@ export default function Header() {
     const currentPath = pathname || '/';
     const cleanPath = stripLocale(currentPath);
     
-    // Debug logs (remove after confirming fix)
-    console.log({ 
-      locale, 
-      currentLocale, 
-      pathname, 
-      cleanPath, 
-      nextLocale,
-      windowPath: typeof window !== 'undefined' ? window.location.pathname : 'N/A'
-    });
-    
     // Construct the target URL with the new locale
     // Use direct navigation to ensure locale switch works reliably
     const targetPath = cleanPath === '/' ? '' : cleanPath;
@@ -70,53 +60,98 @@ export default function Header() {
     }
   };
 
+  const scrollToWaitlist = () => {
+    const element = document.getElementById('waitlist');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setMobileMenuOpen(false);
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-background-light/80 backdrop-blur-sm border-b border-border-light">
-      <nav className="max-w-container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 bg-background-light/95 backdrop-blur-md border-b border-border">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl font-semibold text-text-primary hover:text-text-secondary transition-colors"
+            className="text-3xl font-semibold text-text-primary hover:text-text-secondary transition-colors tracking-tight"
             aria-label={t('brand.name')}
           >
             {t('brand.name')}
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             <button
               onClick={() => scrollToSection('about')}
-              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               {t('nav.about')}
             </button>
             <button
               onClick={() => scrollToSection('vision')}
-              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               {t('nav.vision')}
             </button>
             <button
               onClick={() => scrollToSection('ethics')}
-              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               {t('nav.ethics')}
             </button>
             <button
               onClick={() => scrollToSection('contact')}
-              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+              className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               {t('nav.contact')}
             </button>
 
-            {/* Language Toggle */}
+            {/* Language Toggle - Segmented Control */}
+            <div className="flex items-center gap-0 bg-background-off border border-border rounded-lg p-1" role="group" aria-label="Language selector">
+              <button
+                onClick={() => {
+                  if (currentLocale !== 'en') {
+                    toggleLocale();
+                  }
+                }}
+                className={`px-3 py-1.5 text-sm font-medium rounded transition-all focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 ${
+                  currentLocale === 'en'
+                    ? 'bg-background-light text-text-primary shadow-subtle'
+                    : 'text-text-muted hover:text-text-primary'
+                }`}
+                aria-label="Switch to English"
+                aria-pressed={currentLocale === 'en'}
+              >
+                EN
+              </button>
+              <div className="w-px h-4 bg-border rtl:hidden" aria-hidden="true" />
+              <div className="hidden w-px h-4 bg-border rtl:block" aria-hidden="true" />
+              <button
+                onClick={() => {
+                  if (currentLocale !== 'ar') {
+                    toggleLocale();
+                  }
+                }}
+                className={`px-3 py-1.5 text-sm font-medium rounded transition-all focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 ${
+                  currentLocale === 'ar'
+                    ? 'bg-background-light text-text-primary shadow-subtle'
+                    : 'text-text-muted hover:text-text-primary'
+                }`}
+                aria-label="Switch to Arabic"
+                aria-pressed={currentLocale === 'ar'}
+              >
+                AR
+              </button>
+            </div>
+
+            {/* Join Waitlist CTA */}
             <button
-              onClick={toggleLocale}
-              className="text-sm font-medium text-text-muted hover:text-text-primary transition-colors px-3 py-1.5 border border-border rounded focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2"
-              aria-label={`Switch to ${nextLocale === 'ar' ? 'Arabic' : 'English'}`}
+              onClick={scrollToWaitlist}
+              className="px-4 py-2 bg-text-primary text-background-light font-medium rounded hover:bg-text-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 shadow-subtle"
             >
-              {nextLocale.toUpperCase()}
+              {t('hero.cta')}
             </button>
           </div>
 
@@ -147,38 +182,77 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border-light">
+          <div className="md:hidden py-6 border-t border-border">
             <div className="flex flex-col gap-4">
               <button
                 onClick={() => scrollToSection('about')}
-                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-2"
               >
                 {t('nav.about')}
               </button>
               <button
                 onClick={() => scrollToSection('vision')}
-                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-2"
               >
                 {t('nav.vision')}
               </button>
               <button
                 onClick={() => scrollToSection('ethics')}
-                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-2"
               >
                 {t('nav.ethics')}
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded"
+                className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors text-left rtl:text-right focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 rounded px-2 py-2"
               >
                 {t('nav.contact')}
               </button>
+              
+              {/* Mobile Language Toggle - Segmented Control */}
+              <div className="flex items-center gap-0 bg-background-off border border-border rounded-lg p-1 w-fit" role="group" aria-label="Language selector">
+                <button
+                  onClick={() => {
+                    if (currentLocale !== 'en') {
+                      toggleLocale();
+                    }
+                  }}
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-all focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 ${
+                    currentLocale === 'en'
+                      ? 'bg-background-light text-text-primary shadow-subtle'
+                      : 'text-text-muted hover:text-text-primary'
+                  }`}
+                  aria-label="Switch to English"
+                  aria-pressed={currentLocale === 'en'}
+                >
+                  EN
+                </button>
+                <div className="w-px h-4 bg-border rtl:hidden" aria-hidden="true" />
+                <div className="hidden w-px h-4 bg-border rtl:block" aria-hidden="true" />
+                <button
+                  onClick={() => {
+                    if (currentLocale !== 'ar') {
+                      toggleLocale();
+                    }
+                  }}
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-all focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 ${
+                    currentLocale === 'ar'
+                      ? 'bg-background-light text-text-primary shadow-subtle'
+                      : 'text-text-muted hover:text-text-primary'
+                  }`}
+                  aria-label="Switch to Arabic"
+                  aria-pressed={currentLocale === 'ar'}
+                >
+                  AR
+                </button>
+              </div>
+
+              {/* Mobile Join Waitlist CTA */}
               <button
-                onClick={toggleLocale}
-                className="text-sm font-medium text-text-muted hover:text-text-primary transition-colors px-3 py-1.5 border border-border rounded w-fit focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2"
-                aria-label={`Switch to ${nextLocale === 'ar' ? 'Arabic' : 'English'}`}
+                onClick={scrollToWaitlist}
+                className="px-4 py-2.5 bg-text-primary text-background-light font-medium rounded hover:bg-text-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 shadow-subtle w-fit"
               >
-                {nextLocale.toUpperCase()}
+                {t('hero.cta')}
               </button>
             </div>
           </div>

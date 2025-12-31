@@ -1,7 +1,22 @@
 import type { Metadata } from "next";
 import { cookies, headers } from 'next/headers';
 import { locales, type Locale } from '@/lib/i18n/config';
+import { Inter } from 'next/font/google';
+import { Noto_Sans_Arabic } from 'next/font/google';
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const notoSansArabic = Noto_Sans_Arabic({
+  subsets: ['arabic'],
+  variable: '--font-noto-arabic',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: "Psychpedia - Mental Health & Psychiatry Knowledge Base",
@@ -48,8 +63,11 @@ export default async function RootLayout({
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
   
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning className={`${inter.variable} ${notoSansArabic.variable}`}>
       <body className="antialiased" suppressHydrationWarning>
+        <a href="#main-content" className="skip-to-content">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

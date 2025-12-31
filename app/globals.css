@@ -9,23 +9,50 @@
   }
 
   body {
-    @apply bg-background text-text-primary;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    @apply bg-background text-text-primary font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   [dir="rtl"] body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans Arabic", "Arabic UI Display", sans-serif;
+    @apply font-arabic;
   }
 
   * {
     @apply border-border;
+  }
+
+  /* Skip to content link for accessibility */
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-text-primary focus:text-background-light focus:rounded focus:font-medium;
+  }
+
+  [dir="rtl"] .skip-to-content {
+    @apply focus:left-auto focus:right-4;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Subtle background patterns */
+  .bg-pattern-noise {
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.01) 2px,
+        rgba(0, 0, 0, 0.01) 4px
+      );
+  }
+
+  .bg-pattern-grid {
+    background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }
