@@ -50,8 +50,8 @@ export function getContentPath(
   return {
     mdxPath,
     metadataPath,
-    fallbackMdxPath: locale !== 'en' ? fallbackMdxPath : undefined,
-    fallbackMetadataPath: locale !== 'en' ? fallbackMetadataPath : undefined,
+    fallbackMdxPath, // Always provide fallback path
+    fallbackMetadataPath, // Always provide fallback path
   };
 }
 

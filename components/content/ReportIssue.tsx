@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useState, useEffect } from 'react';
 
 interface ReportIssueProps {
   contentType: 'condition' | 'medication';
@@ -14,6 +15,12 @@ interface ReportIssueProps {
  */
 export default function ReportIssue({ contentType, contentSlug, locale }: ReportIssueProps) {
   const t = useTranslations('content.reportIssue');
+  const [currentUrl, setCurrentUrl] = useState('');
+  
+  useEffect(() => {
+    // Set the URL only after component mounts on client to avoid hydration mismatch
+    setCurrentUrl(window.location.href);
+  }, []);
   
   const reportUrl = `mailto:content@psychpedia.com?subject=${encodeURIComponent(
     `Content Issue: ${contentType}/${contentSlug}`
@@ -21,7 +28,7 @@ export default function ReportIssue({ contentType, contentSlug, locale }: Report
     `Content Type: ${contentType}\n` +
     `Slug: ${contentSlug}\n` +
     `Locale: ${locale}\n` +
-    `URL: ${typeof window !== 'undefined' ? window.location.href : ''}\n\n` +
+    `URL: ${currentUrl}\n\n` +
     `Please describe the issue:\n`
   )}`;
   

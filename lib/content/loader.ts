@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import type { Locale, ContentDepth } from './types';
 import type { ConditionContent, ConditionMetadata } from './schemas/condition';
 import type { MedicationContent, MedicationMetadata } from './schemas/medication';
@@ -16,19 +17,29 @@ export async function loadCondition(
 ): Promise<ConditionContent | null> {
   const paths = getContentPath('conditions', slug, locale);
   
-  // Try locale-specific first, then fallback to EN
-  let metadata = readJSONFile<ConditionMetadata>(paths.mdxPath ? paths.metadataPath : paths.fallbackMetadataPath || paths.metadataPath);
-  let mdxData = readMDXFile(paths.mdxPath);
+  // Try locale-specific first, then fallback to root
+  let metadata: ConditionMetadata | null = null;
+  let mdxData: { content: string; frontmatter: Record<string, unknown> } | null = null;
   
-  // Fallback to English if locale-specific not found
-  if (!metadata && paths.fallbackMetadataPath) {
+  // Check if locale-specific files exist
+  if (existsSync(paths.metadataPath)) {
+    metadata = readJSONFile<ConditionMetadata>(paths.metadataPath);
+  }
+  if (existsSync(paths.mdxPath)) {
+    mdxData = readMDXFile(paths.mdxPath);
+  }
+  
+  // Fallback to root files if locale-specific not found
+  if (!metadata && paths.fallbackMetadataPath && existsSync(paths.fallbackMetadataPath)) {
     metadata = readJSONFile<ConditionMetadata>(paths.fallbackMetadataPath);
   }
-  if (!mdxData && paths.fallbackMdxPath) {
+  if (!mdxData && paths.fallbackMdxPath && existsSync(paths.fallbackMdxPath)) {
     mdxData = readMDXFile(paths.fallbackMdxPath);
   }
   
   if (!metadata) {
+    console.error(`[loadCondition] No metadata found for slug: ${slug}, locale: ${locale}`);
+    console.error(`[loadCondition] Tried paths:`, paths);
     return null;
   }
   
@@ -64,19 +75,29 @@ export async function loadMedication(
 ): Promise<MedicationContent | null> {
   const paths = getContentPath('medications', slug, locale);
   
-  // Try locale-specific first, then fallback to EN
-  let metadata = readJSONFile<MedicationMetadata>(paths.mdxPath ? paths.metadataPath : paths.fallbackMetadataPath || paths.metadataPath);
-  let mdxData = readMDXFile(paths.mdxPath);
+  // Try locale-specific first, then fallback to root
+  let metadata: MedicationMetadata | null = null;
+  let mdxData: { content: string; frontmatter: Record<string, unknown> } | null = null;
   
-  // Fallback to English if locale-specific not found
-  if (!metadata && paths.fallbackMetadataPath) {
+  // Check if locale-specific files exist
+  if (existsSync(paths.metadataPath)) {
+    metadata = readJSONFile<MedicationMetadata>(paths.metadataPath);
+  }
+  if (existsSync(paths.mdxPath)) {
+    mdxData = readMDXFile(paths.mdxPath);
+  }
+  
+  // Fallback to root files if locale-specific not found
+  if (!metadata && paths.fallbackMetadataPath && existsSync(paths.fallbackMetadataPath)) {
     metadata = readJSONFile<MedicationMetadata>(paths.fallbackMetadataPath);
   }
-  if (!mdxData && paths.fallbackMdxPath) {
+  if (!mdxData && paths.fallbackMdxPath && existsSync(paths.fallbackMdxPath)) {
     mdxData = readMDXFile(paths.fallbackMdxPath);
   }
   
   if (!metadata) {
+    console.error(`[loadMedication] No metadata found for slug: ${slug}, locale: ${locale}`);
+    console.error(`[loadMedication] Tried paths:`, paths);
     return null;
   }
   
