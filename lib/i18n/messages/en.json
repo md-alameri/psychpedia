@@ -72,6 +72,26 @@
   "meta": {
     "title": "Psychpedia - Mental Health & Psychiatry Knowledge Base",
     "description": "A clinically grounded knowledge platform for mental health. Evidence-based content for clinicians, medical students, and mental health professionals."
+  },
+  "content": {
+    "disclaimer": {
+      "title": "Not Medical Advice",
+      "text": "This content is for informational and educational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of qualified health providers with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read on this platform."
+    },
+    "reportIssue": {
+      "title": "Report an Issue",
+      "description": "Found an error or have a concern about this content?",
+      "button": "Report Issue"
+    },
+    "publicSummary": {
+      "title": "Public Summary"
+    },
+    "clinicianNotes": {
+      "title": "Clinician Notes"
+    },
+    "dosingHidden": {
+      "message": "Dosing information is available to registered healthcare professionals."
+    }
   }
 }
 

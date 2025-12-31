@@ -4,15 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run validate:all && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "validate:citations": "tsx scripts/validate-citations.ts",
+    "validate:all": "npm run validate:content && npm run validate:citations"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.1.1",
+    "gray-matter": "^4.0.3",
     "next": "^16.1.1",
     "next-intl": "^4.6.1",
+    "next-mdx-remote": "^5.0.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "zod": "^4.3.2"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -22,6 +31,7 @@
     "eslint-config-next": "^16.1.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

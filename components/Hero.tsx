@@ -50,13 +50,13 @@ export default function Hero() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={scrollToWaitlist}
+          <button
+            onClick={scrollToWaitlist}
               className="inline-flex items-center justify-center px-8 py-3.5 bg-text-primary text-background-light font-medium rounded-lg hover:bg-text-secondary transition-all focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2 shadow-soft hover:shadow-subtle"
-              aria-label={t('hero.cta')}
-            >
-              {t('hero.cta')}
-            </button>
+            aria-label={t('hero.cta')}
+          >
+            {t('hero.cta')}
+          </button>
             <button
               onClick={scrollToEthics}
               className="inline-flex items-center justify-center px-8 py-3.5 bg-transparent text-text-primary font-medium rounded-lg border border-border hover:bg-background-off hover:border-text-secondary transition-all focus:outline-none focus:ring-2 focus:ring-text-primary focus:ring-offset-2"

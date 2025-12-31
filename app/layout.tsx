@@ -56,7 +56,7 @@ export default async function RootLayout({
     if (pathnameHeader.startsWith('/ar')) {
       locale = 'ar';
     } else if (pathnameHeader.startsWith('/en')) {
-      locale = 'en';
+    locale = 'en';
     }
   }
   

@@ -1,0 +1,27 @@
+{
+  "slug": "major-depressive-disorder",
+  "title": "Major Depressive Disorder",
+  "description": "A comprehensive guide to Major Depressive Disorder (MDD), including diagnosis, management, and clinical considerations.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Sarah Ahmed",
+      "role": "Consultant Psychiatrist",
+      "credentials": ["MBBS", "MRCPsych", "MD"]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Major Depressive Disorder (MDD) is a common mental health condition characterized by persistent sadness, loss of interest, and other symptoms that affect daily life. With proper treatment, most people can achieve significant improvement. This content provides educational information and is not a substitute for professional medical advice.",
+  "category": "Mood Disorders",
+  "tags": ["depression", "mood disorders", "mental health"],
+  "relatedConditions": ["bipolar-disorder", "persistent-depressive-disorder"]
+}
+

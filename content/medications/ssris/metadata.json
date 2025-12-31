@@ -1,0 +1,28 @@
+{
+  "slug": "ssris",
+  "title": "Selective Serotonin Reuptake Inhibitors (SSRIs)",
+  "description": "Comprehensive guide to SSRIs, the first-line treatment for depression and anxiety disorders, including dosing, side effects, and clinical considerations.",
+  "editorial": {
+    "lastReviewed": "2024-01-20",
+    "reviewer": {
+      "name": "Dr. Mohammed Al-Rashid",
+      "role": "Consultant Psychiatrist",
+      "credentials": ["MBBS", "MRCPsych", "PhD"]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": false,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "SSRIs (Selective Serotonin Reuptake Inhibitors) are a class of medications commonly used to treat depression and anxiety disorders. This information is for educational purposes only and is not medical advice. Always consult with a qualified healthcare provider before starting or changing any medication.",
+  "drugClass": "Antidepressants",
+  "genericName": "SSRIs",
+  "brandNames": ["Prozac", "Zoloft", "Lexapro", "Celexa", "Paxil"],
+  "relatedMedications": ["snris", "atypical-antidepressants"]
+}
+
