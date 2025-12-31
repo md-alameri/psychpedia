@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import { locales, type Locale } from '@/lib/i18n/config';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import SearchModal from '@/components/search/SearchModal';
+import { AudienceProvider } from '@/lib/contexts/AudienceContext';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -67,9 +69,12 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <Header />
-      <main id="main-content">{children}</main>
-      <Footer />
+      <AudienceProvider>
+        <Header />
+        <main id="main-content">{children}</main>
+        <Footer />
+        <SearchModal />
+      </AudienceProvider>
     </NextIntlClientProvider>
   );
 }

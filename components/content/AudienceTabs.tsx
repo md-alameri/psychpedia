@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import type { ContentDepth } from '@/lib/content/types';
 
@@ -11,13 +11,33 @@ interface AudienceTabsProps {
   defaultDepth?: ContentDepth;
 }
 
+const STORAGE_KEY = 'psychpedia-audience-preference';
+
 /**
  * Progressive disclosure component for audience tiers
  * Allows users to switch between Basic (Patients), Intermediate (Students), and Advanced (Clinicians) views
+ * Persists user preference in localStorage across sessions
  */
 export default function AudienceTabs({ onDepthChange, defaultDepth = 'basic' }: AudienceTabsProps) {
   const t = useTranslations();
-  const [activeDepth, setActiveDepth] = useState<ContentDepth>(defaultDepth);
+  
+  // Initialize from localStorage or use default
+  const [activeDepth, setActiveDepth] = useState<ContentDepth>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && ['basic', 'intermediate', 'advanced'].includes(saved)) {
+        return saved as ContentDepth;
+      }
+    }
+    return defaultDepth;
+  });
+  
+  // Save to localStorage when depth changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, activeDepth);
+    }
+  }, [activeDepth]);
   
   const tabs: { depth: ContentDepth; label: string; description: string }[] = [
     {

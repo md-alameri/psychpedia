@@ -30,12 +30,16 @@ export default async function ConditionsPage({ params }: ConditionsPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   
-  // Load all conditions
+  // Load all conditions (only published)
   const slugs = getAllConditionSlugs();
   const conditions = await Promise.all(
     slugs.map(async (slug) => {
       const content = await loadCondition(slug, locale);
-      return content ? { ...content.metadata, slug } : null;
+      // Only include published content
+      if (content && content.metadata.status === 'published') {
+        return { ...content.metadata, slug };
+      }
+      return null;
     })
   );
   

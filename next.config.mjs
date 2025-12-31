@@ -13,6 +13,12 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  // Explicitly set Turbopack root to avoid warning about multiple lockfiles
+  experimental: {
+    turbo: {
+      root: process.cwd(),
+    },
+  },
 };
 
 export default withNextIntl(withMDX(nextConfig));

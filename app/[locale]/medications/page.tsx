@@ -30,12 +30,16 @@ export default async function MedicationsPage({ params }: MedicationsPageProps) 
   const { locale } = await params;
   setRequestLocale(locale);
   
-  // Load all medications
+  // Load all medications (only published)
   const slugs = getAllMedicationSlugs();
   const medications = await Promise.all(
     slugs.map(async (slug) => {
       const content = await loadMedication(slug, locale);
-      return content ? { ...content.metadata, slug } : null;
+      // Only include published content
+      if (content && content.metadata.status === 'published') {
+        return { ...content.metadata, slug };
+      }
+      return null;
     })
   );
   

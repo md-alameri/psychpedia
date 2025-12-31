@@ -46,6 +46,12 @@ export const CONDITION_SECTION_TITLES: Record<ConditionSectionId, string> = {
  * Zod schema for condition metadata
  * All fields are required except optional ones explicitly marked
  */
+const ChangelogEntrySchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
+  summary: z.string().min(1, 'Changelog summary is required'),
+  version: z.number().int().positive(),
+});
+
 export const ConditionMetadataSchema = z.object({
   slug: z.string().min(1, 'Slug is required'),
   title: z.string().min(1, 'Title is required'),
@@ -61,6 +67,13 @@ export const ConditionMetadataSchema = z.object({
   category: z.string().optional(),
   tags: z.array(z.string()).default([]),
   relatedConditions: z.array(z.string()).default([]),
+  // Publishing workflow fields
+  status: z.enum(['draft', 'published']).default('published'),
+  reviewCadenceMonths: z.number().int().positive().default(12),
+  nextReviewDue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format').optional(),
+  changelog: z.array(ChangelogEntrySchema).default([]),
+  // Search synonyms
+  synonyms: z.array(z.string()).default([]),
 });
 
 export type ConditionMetadata = z.infer<typeof ConditionMetadataSchema>;

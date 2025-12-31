@@ -1,10 +1,13 @@
 import { existsSync } from 'fs';
+import { join } from 'path';
 import type { Locale, ContentDepth } from './types';
 import type { ConditionContent, ConditionMetadata } from './schemas/condition';
 import type { MedicationContent, MedicationMetadata } from './schemas/medication';
+import type { GovernanceContent, GovernanceMetadata } from './schemas/governance';
 import { validateConditionMetadata } from './schemas/condition';
 import { validateMedicationMetadata } from './schemas/medication';
-import { getContentPath, readJSONFile, readMDXFile } from './utils';
+import { validateGovernanceMetadata } from './schemas/governance';
+import { getContentPath, readJSONFile, readMDXFile, CONTENT_DIR } from './utils';
 import { CONDITION_SECTIONS, createDefaultConditionSections } from './schemas/condition';
 import { MEDICATION_SECTIONS, createDefaultMedicationSections } from './schemas/medication';
 
@@ -51,6 +54,24 @@ export async function loadCondition(
     const validatedMetadata = validateConditionMetadata(metadata);
     // Set the requested locale, not the content's original locale
     validatedMetadata.locale = locale;
+    
+    // Calculate nextReviewDue if not provided
+    if (!validatedMetadata.nextReviewDue) {
+      const lastReviewed = new Date(validatedMetadata.editorial.lastReviewed);
+      const nextReview = new Date(lastReviewed);
+      nextReview.setMonth(nextReview.getMonth() + validatedMetadata.reviewCadenceMonths);
+      validatedMetadata.nextReviewDue = nextReview.toISOString().split('T')[0];
+    }
+    
+    // Validate published content requirements
+    if (validatedMetadata.status === 'published') {
+      if (!validatedMetadata.editorial.lastReviewed) {
+        throw new Error('Published content must have lastReviewed date');
+      }
+      if (!validatedMetadata.editorial.reviewer.name) {
+        throw new Error('Published content must have reviewer name');
+      }
+    }
     
     // Create sections structure
     const sections = createDefaultConditionSections();
@@ -115,6 +136,24 @@ export async function loadMedication(
     // Set the requested locale, not the content's original locale
     validatedMetadata.locale = locale;
     
+    // Calculate nextReviewDue if not provided
+    if (!validatedMetadata.nextReviewDue) {
+      const lastReviewed = new Date(validatedMetadata.editorial.lastReviewed);
+      const nextReview = new Date(lastReviewed);
+      nextReview.setMonth(nextReview.getMonth() + validatedMetadata.reviewCadenceMonths);
+      validatedMetadata.nextReviewDue = nextReview.toISOString().split('T')[0];
+    }
+    
+    // Validate published content requirements
+    if (validatedMetadata.status === 'published') {
+      if (!validatedMetadata.editorial.lastReviewed) {
+        throw new Error('Published content must have lastReviewed date');
+      }
+      if (!validatedMetadata.editorial.reviewer.name) {
+        throw new Error('Published content must have reviewer name');
+      }
+    }
+    
     // Create sections structure
     const sections = createDefaultMedicationSections();
     
@@ -173,5 +212,83 @@ export function getAllConditionSlugs(): string[] {
 export function getAllMedicationSlugs(): string[] {
   const { getAllContentSlugs } = require('./utils');
   return getAllContentSlugs('medications');
+}
+
+/**
+ * Load governance page content for a given slug and locale
+ */
+export async function loadGovernance(
+  slug: string,
+  locale: Locale = 'en'
+): Promise<GovernanceContent | null> {
+  const governanceDir = join(CONTENT_DIR, 'governance', slug);
+  
+  // Try locale-specific first, then fallback to root
+  let metadata: GovernanceMetadata | null = null;
+  let mdxData: { content: string; frontmatter: Record<string, unknown> } | null = null;
+  let isLocaleSpecific = false;
+  
+  // Check if locale-specific files exist
+  const localeDir = join(governanceDir, locale);
+  const localeMdxPath = join(localeDir, 'index.mdx');
+  const localeMetadataPath = join(localeDir, 'metadata.json');
+  
+  if (existsSync(localeMetadataPath)) {
+    metadata = readJSONFile<GovernanceMetadata>(localeMetadataPath);
+    isLocaleSpecific = true;
+  }
+  if (existsSync(localeMdxPath)) {
+    mdxData = readMDXFile(localeMdxPath);
+  }
+  
+  // Fallback to root files if locale-specific not found
+  const rootMdxPath = join(governanceDir, 'index.mdx');
+  const rootMetadataPath = join(governanceDir, 'metadata.json');
+  
+  if (!metadata && existsSync(rootMetadataPath)) {
+    metadata = readJSONFile<GovernanceMetadata>(rootMetadataPath);
+    isLocaleSpecific = false;
+  }
+  if (!mdxData && existsSync(rootMdxPath)) {
+    mdxData = readMDXFile(rootMdxPath);
+  }
+  
+  // If Arabic was requested but not found, try English explicitly
+  if (!metadata && locale === 'ar') {
+    const enDir = join(governanceDir, 'en');
+    const enMdxPath = join(enDir, 'index.mdx');
+    const enMetadataPath = join(enDir, 'metadata.json');
+    
+    if (existsSync(enMetadataPath)) {
+      metadata = readJSONFile<GovernanceMetadata>(enMetadataPath);
+      isLocaleSpecific = false;
+    }
+    if (!mdxData && existsSync(enMdxPath)) {
+      mdxData = readMDXFile(enMdxPath);
+    }
+  }
+  
+  if (!metadata) {
+    console.error(`[loadGovernance] No metadata found for slug: ${slug}, locale: ${locale}`);
+    return null;
+  }
+  
+  // Validate metadata
+  try {
+    const validatedMetadata = validateGovernanceMetadata(metadata);
+    // Set the requested locale, not the content's original locale
+    validatedMetadata.locale = locale;
+    
+    const rawContent = mdxData?.content || '';
+    
+    return {
+      metadata: validatedMetadata,
+      rawContent,
+      isLocaleSpecific,
+    };
+  } catch (error) {
+    console.error(`Error validating governance metadata for ${slug}:`, error);
+    return null;
+  }
 }
 

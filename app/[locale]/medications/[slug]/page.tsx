@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { draftMode } from 'next/headers';
 import type { Metadata } from 'next';
 import type { Locale } from '@/lib/i18n/config';
 import { loadMedication, getAllMedicationSlugs } from '@/lib/content/loader';
@@ -67,6 +68,13 @@ export default async function MedicationPage({ params }: MedicationPageProps) {
   const content = await loadMedication(slug, locale);
   
   if (!content) {
+    notFound();
+  }
+  
+  // Production draft check: drafts are only accessible with preview mode enabled
+  if (content.metadata.status === 'draft' && 
+      !draftMode().isEnabled && 
+      process.env.NODE_ENV === 'production') {
     notFound();
   }
   

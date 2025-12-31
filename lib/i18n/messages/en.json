@@ -81,7 +81,16 @@
     "reportIssue": {
       "title": "Report an Issue",
       "description": "Found an error or have a concern about this content?",
-      "button": "Report Issue"
+      "button": "Report Issue",
+      "emailLabel": "Your email",
+      "emailOptional": "optional",
+      "emailPlaceholder": "your.email@example.com",
+      "messageLabel": "Describe the issue",
+      "messagePlaceholder": "Please describe the issue you found...",
+      "submit": "Submit Report",
+      "submitting": "Submitting...",
+      "cancel": "Cancel",
+      "success": "Thank you! Your report has been submitted successfully."
     },
     "publicSummary": {
       "title": "Public Summary"
@@ -96,6 +105,52 @@
       "title": "Content Not Available in Arabic",
       "message": "This content is currently only available in English. We are working on Arabic translations and will update this page when available.",
       "viewEnglish": "View English version"
+    },
+    "governanceLocaleUnavailable": {
+      "title": "This page is currently available in English",
+      "message": "This governance page is currently only available in English. We are working on Arabic translations and will update this page when available.",
+      "viewEnglish": "View English version"
+    },
+    "trustBadges": {
+      "title": "Content Credibility",
+      "evidenceLevel": {
+        "label": "Evidence Level",
+        "strong": "Strong evidence (multiple RCTs, meta-analyses)",
+        "moderate": "Moderate evidence (single RCT, well-designed studies)",
+        "limited": "Limited evidence (observational studies, case series)",
+        "expert": "Expert opinion or consensus"
+      },
+      "reviewCadence": {
+        "label": "Review Cycle",
+        "value": "Reviewed every {months} months"
+      },
+      "reviewStatus": {
+        "overdue": "Overdue",
+        "due": "Due in {days} days"
+      },
+      "lastReviewed": "Last reviewed"
+    },
+    "urgentCare": {
+      "title": "When to Seek Urgent Care",
+      "redFlags": {
+        "title": "Red Flags - Seek Immediate Medical Attention"
+      },
+      "whenToSeekHelp": {
+        "title": "When to Seek Professional Help"
+      },
+      "disclaimer": "If you or someone you know is experiencing a mental health emergency, contact emergency services immediately."
+    },
+    "studentHighlights": {
+      "title": "Student Highlights",
+      "highYield": {
+        "title": "High-Yield Points"
+      },
+      "differentials": {
+        "title": "Key Differentials"
+      },
+      "examTips": {
+        "title": "Exam Tips"
+      }
     }
   }
 }

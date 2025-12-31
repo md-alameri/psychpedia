@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run validate:all && next build",
+    "build": "npm run build:search-index && npm run validate:all && next build",
+    "build:search-index": "tsx scripts/build-search-index.ts",
     "start": "next start",
     "lint": "next lint",
     "validate:content": "tsx scripts/validate-content.ts",
