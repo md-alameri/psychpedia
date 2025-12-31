@@ -72,14 +72,14 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-background-light/95 backdrop-blur-md border-b border-border">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link
-            href="/"
+          {/* Logo - Use explicit locale path to preserve current locale */}
+          <a
+            href={`/${currentLocale}`}
             className="text-3xl font-semibold text-text-primary hover:text-text-secondary transition-colors tracking-tight"
             aria-label={t('brand.name')}
           >
             {t('brand.name')}
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
