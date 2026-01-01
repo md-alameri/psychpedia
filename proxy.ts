@@ -7,7 +7,7 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en',
 });
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Normalize API routes: rewrite /api/ to /api (remove trailing slash)
