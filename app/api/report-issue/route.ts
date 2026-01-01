@@ -221,14 +221,9 @@ export async function POST(request: NextRequest) {
     
     // Create issue report in Wagtail CMS if configured
     let cmsResult;
-    // Derive CMS base URL consistently
-    let cmsBase: string | undefined;
-    if (process.env.CMS_API_BASE) {
-      // Remove /api/v2 suffix if present
-      cmsBase = process.env.CMS_API_BASE.replace(/\/api\/v2\/?$/, '');
-    } else if (process.env.NEXT_PUBLIC_CMS_URL) {
-      cmsBase = process.env.NEXT_PUBLIC_CMS_URL;
-    }
+    // Derive CMS base URL consistently from centralized config
+    const { CMS_BASE_URL, isCMSConfigured } = await import('@/lib/cms/config');
+    const cmsBase = isCMSConfigured() ? CMS_BASE_URL : undefined;
     
     const issueReportToken = process.env.ISSUE_REPORT_TOKEN;
     

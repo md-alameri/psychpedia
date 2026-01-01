@@ -1,5 +1,6 @@
 import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { CMS_PREVIEW_SECRET } from '@/lib/cms/config';
 
 /**
  * Preview mode API endpoint
@@ -7,13 +8,20 @@ import { redirect } from 'next/navigation';
  * 
  * Usage: /api/preview?token=YOUR_PREVIEW_TOKEN
  * 
- * Requires PREVIEW_TOKEN environment variable
+ * Requires CMS_PREVIEW_SECRET (or PREVIEW_TOKEN) environment variable
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
   
-  if (!token || token !== process.env.PREVIEW_TOKEN) {
+  // Use centralized config - supports both old and new env var names
+  const expectedToken = CMS_PREVIEW_SECRET;
+  
+  if (!expectedToken) {
+    return new Response('Preview not configured', { status: 500 });
+  }
+  
+  if (!token || token !== expectedToken) {
     return new Response('Invalid token', { status: 401 });
   }
   

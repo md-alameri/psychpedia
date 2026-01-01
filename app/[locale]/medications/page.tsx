@@ -35,7 +35,9 @@ export default async function MedicationsPage({ params }: MedicationsPageProps) 
   // Try CMS first, fallback to local files
   let medications: Array<{ slug: string; title: string; description: string; genericName?: string }> = [];
   
-  if (process.env.CMS_URL) {
+  // Use centralized config check - fail gracefully if CMS is not configured
+  const { isCMSConfigured } = await import('@/lib/cms/config');
+  if (isCMSConfigured()) {
     try {
       medications = await fetchMedicationsIndex(locale);
     } catch (error) {

@@ -34,7 +34,9 @@ export default async function ConditionsPage({ params }: ConditionsPageProps) {
   // Try CMS first, fallback to local files
   let conditions: Array<{ slug: string; title: string; description: string }> = [];
   
-  if (process.env.NEXT_PUBLIC_CMS_URL || process.env.CMS_API_BASE) {
+  // Use centralized config check - fail gracefully if CMS is not configured
+  const { isCMSConfigured } = await import('@/lib/cms/config');
+  if (isCMSConfigured()) {
     try {
       conditions = await fetchConditionsIndex(locale);
     } catch (error) {

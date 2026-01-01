@@ -2,15 +2,18 @@ import type { Locale } from '@/lib/content/types';
 import type { ConditionContent, ConditionMetadata } from '@/lib/content/schemas/condition';
 import type { MedicationContent, MedicationMetadata } from '@/lib/content/schemas/medication';
 import type { GovernanceContent, GovernanceMetadata } from '@/lib/content/schemas/governance';
+import { CMS_BASE_URL, CMS_API_BASE, isCMSConfigured } from '@/lib/cms/config';
 
-const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || 'http://localhost:8000';
-const API_BASE = process.env.CMS_API_BASE || `${CMS_URL}/api/v2`;
+// Use centralized config - single source of truth
+const CMS_URL = CMS_BASE_URL;
+const API_BASE = CMS_API_BASE;
 
 /**
  * Helper to check if CMS is explicitly configured
+ * @deprecated Use isCMSConfigured() from '@/lib/cms/config' instead
  */
 function isCMSExplicitlyConfigured(): boolean {
-  return 'NEXT_PUBLIC_CMS_URL' in process.env || 'CMS_API_BASE' in process.env;
+  return isCMSConfigured();
 }
 
 /**

@@ -25,14 +25,19 @@ export async function loadCondition(
   locale: Locale = 'en'
 ): Promise<ConditionContent | null> {
   // Try CMS first if configured
-  if (process.env.CMS_URL) {
+  // Use centralized config check - fail gracefully if CMS is not configured
+  const { isCMSConfigured } = await import('@/lib/cms/config');
+  if (isCMSConfigured()) {
     try {
       const cmsContent = await fetchConditionFromCMS(locale, slug);
       if (cmsContent) {
         return cmsContent;
       }
     } catch (error) {
-      console.warn(`[loadCondition] CMS fetch failed for ${slug}, falling back to local files:`, error);
+      // Log warning during build, but don't throw - graceful degradation
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`[loadCondition] CMS fetch failed for ${slug}, falling back to local files:`, error);
+      }
     }
   }
 
@@ -120,7 +125,9 @@ export async function loadMedication(
   locale: Locale = 'en'
 ): Promise<MedicationContent | null> {
   // Try CMS first if configured
-  if (process.env.CMS_URL) {
+  // Use centralized config check - fail gracefully if CMS is not configured
+  const { isCMSConfigured } = await import('@/lib/cms/config');
+  if (isCMSConfigured()) {
     try {
       const cmsContent = await fetchMedicationFromCMS(locale, slug);
       if (cmsContent) {
@@ -256,7 +263,9 @@ export async function loadGovernance(
   locale: Locale = 'en'
 ): Promise<GovernanceContent | null> {
   // Try CMS first if configured
-  if (process.env.CMS_URL) {
+  // Use centralized config check - fail gracefully if CMS is not configured
+  const { isCMSConfigured } = await import('@/lib/cms/config');
+  if (isCMSConfigured()) {
     try {
       const cmsContent = await fetchGovernanceFromCMS(locale, slug);
       if (cmsContent) {

@@ -27,7 +27,9 @@ export async function generateStaticParams() {
   // Try CMS first, fallback to local files
   let slugs: string[] = [];
   
-  if (process.env.CMS_URL) {
+  // Use centralized config check - fail gracefully if CMS is not configured
+  const { isCMSConfigured } = await import('@/lib/cms/config');
+  if (isCMSConfigured()) {
     try {
       const enSlugs = await fetchAllMedicationSlugs('en');
       const arSlugs = await fetchAllMedicationSlugs('ar');

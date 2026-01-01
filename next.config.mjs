@@ -24,6 +24,22 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   // Help with full URL normalization control in proxy/handlers
   skipProxyUrlNormalize: true,
+  // Configure remote image patterns for Wagtail CMS
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cms.psychpedia.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default withNextIntl(withMDX(nextConfig));
