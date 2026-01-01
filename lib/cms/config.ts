@@ -35,17 +35,25 @@ export const CMS_MEDIA_BASE = CMS_BASE_URL;
  * Get CMS preview secret from environment variables
  * Supports both old (PREVIEW_TOKEN) and new (CMS_PREVIEW_SECRET) names
  * Prefers new name if both are set
+ * Trims whitespace and returns undefined for empty strings
  */
-export const CMS_PREVIEW_SECRET =
-  process.env.CMS_PREVIEW_SECRET || process.env.PREVIEW_TOKEN || undefined;
+export const CMS_PREVIEW_SECRET = (() => {
+  const secret = process.env.CMS_PREVIEW_SECRET || process.env.PREVIEW_TOKEN;
+  // Return undefined if secret is empty or only whitespace
+  return secret?.trim() || undefined;
+})();
 
 /**
  * Get CMS revalidation secret from environment variables
  * Supports both old (REVALIDATE_SECRET) and new (CMS_REVALIDATE_SECRET) names
  * Prefers new name if both are set
+ * Trims whitespace and returns undefined for empty strings
  */
-export const CMS_REVALIDATE_SECRET =
-  process.env.CMS_REVALIDATE_SECRET || process.env.REVALIDATE_SECRET || undefined;
+export const CMS_REVALIDATE_SECRET = (() => {
+  const secret = process.env.CMS_REVALIDATE_SECRET || process.env.REVALIDATE_SECRET;
+  // Return undefined if secret is empty or only whitespace
+  return secret?.trim() || undefined;
+})();
 
 /**
  * Check if CMS is explicitly configured
