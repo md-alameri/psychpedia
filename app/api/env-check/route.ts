@@ -20,8 +20,9 @@ import { CMS_BASE_URL, CMS_REVALIDATE_SECRET } from '@/lib/cms/config';
  */
 export async function GET() {
   // Server-only route - no client-side exposure
-  // Read config values (which handle env var fallbacks)
+  // Read config values (which handle env var fallbacks and trimming)
   const baseUrl = CMS_BASE_URL || null;
+  // Use the same trimmed/validated secret check as revalidate endpoint
   const hasRevalidateSecret = !!CMS_REVALIDATE_SECRET;
 
   // Return JSON response with safe information only
