@@ -10,30 +10,40 @@ const intlMiddleware = createMiddleware({
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Normalize API routes: rewrite /api/ to /api (remove trailing slash)
-  // Using rewrite instead of redirect to avoid 308 responses
-  // This maps /api/ to /api internally without changing the URL
-  // Only works reliably after disabling Next.js's own trailing slash redirect
-  if (pathname === '/api/') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/api';
-    return NextResponse.rewrite(url);
+  // ✅ CRITICAL: Do not touch API routes - return immediately
+  // This MUST be the first check before any other processing
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
   }
 
-  // Handle next-intl routing
+  // Exclude Next.js internals and static assets
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon.ico') ||
+    pathname.startsWith('/robots.txt') ||
+    pathname.startsWith('/sitemap') ||
+    pathname.startsWith('/static')
+  ) {
+    return NextResponse.next();
+  }
+
+  // Handle next-intl routing for all other paths (non-API routes)
   return intlMiddleware(request);
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files (public folder)
+     * Match all request paths except for:
+     * - api (API routes - CRITICAL: must be excluded to prevent locale redirects)
+     * - _next (Next.js internals)
+     * - favicon.ico, robots.txt, sitemap.xml (static files)
+     * - Files with extensions (images, etc.)
+     * 
+     * The negative lookahead (?!api...) ensures /api/* routes are NEVER matched
+     * by this middleware, preventing locale redirects on API routes.
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next|favicon\\.ico|robots\\.txt|sitemap\\.xml|.*\\..*).*)',
   ],
 };
 
