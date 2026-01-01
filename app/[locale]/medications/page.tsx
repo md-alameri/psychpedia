@@ -2,12 +2,14 @@ import { setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import type { Locale } from '@/lib/i18n/config';
 import { getAllMedicationSlugs } from '@/lib/content/loader';
-import { loadMedication } from '@/lib/content/loader';
+import { fetchMedicationsIndex } from '@/lib/cms';
 import MedicationsIndex from '@/components/content/MedicationsIndex';
 
 interface MedicationsPageProps {
   params: Promise<{ locale: Locale }>;
 }
+
+export const revalidate = 300; // ISR: revalidate every 5 minutes
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ar' }];
@@ -30,21 +32,44 @@ export default async function MedicationsPage({ params }: MedicationsPageProps) 
   const { locale } = await params;
   setRequestLocale(locale);
   
-  // Load all medications (only published)
-  const slugs = getAllMedicationSlugs();
-  const medications = await Promise.all(
-    slugs.map(async (slug) => {
-      const content = await loadMedication(slug, locale);
-      // Only include published content
-      if (content && content.metadata.status === 'published') {
-        return { ...content.metadata, slug };
-      }
-      return null;
-    })
-  );
+  // Try CMS first, fallback to local files
+  let medications: Array<{ slug: string; title: string; description: string; genericName?: string }> = [];
   
-  const validMedications = medications.filter((m): m is NonNullable<typeof m> => m !== null);
+  if (process.env.CMS_URL) {
+    try {
+      medications = await fetchMedicationsIndex(locale);
+    } catch (error) {
+      console.warn('[MedicationsPage] CMS fetch failed, falling back to local files:', error);
+      // Fallback to local files
+      const slugs = getAllMedicationSlugs();
+      const { loadMedication } = await import('@/lib/content/loader');
+      const localMedications = await Promise.all(
+        slugs.map(async (slug) => {
+          const content = await loadMedication(slug, locale);
+          if (content && content.metadata.status === 'published') {
+            return { ...content.metadata, slug };
+          }
+          return null;
+        })
+      );
+      medications = localMedications.filter((m): m is NonNullable<typeof m> => m !== null);
+    }
+  } else {
+    // No CMS configured, use local files
+    const slugs = getAllMedicationSlugs();
+    const { loadMedication } = await import('@/lib/content/loader');
+    const localMedications = await Promise.all(
+      slugs.map(async (slug) => {
+        const content = await loadMedication(slug, locale);
+        if (content && content.metadata.status === 'published') {
+          return { ...content.metadata, slug };
+        }
+        return null;
+      })
+    );
+    medications = localMedications.filter((m): m is NonNullable<typeof m> => m !== null);
+  }
   
-  return <MedicationsIndex medications={validMedications} locale={locale} />;
+  return <MedicationsIndex medications={medications as any} locale={locale} />;
 }
 

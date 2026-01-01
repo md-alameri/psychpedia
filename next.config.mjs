@@ -1,7 +1,7 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 import createMDX from '@next/mdx';
 
-const withNextIntl = createNextIntlPlugin('./lib/i18n/config.ts');
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const withMDX = createMDX({
   options: {
@@ -10,15 +10,27 @@ const withMDX = createMDX({
   },
 });
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  // Explicitly set Turbopack root to avoid warning about multiple lockfiles
+  // Turbopack configuration
+  // Set root to this project directory to resolve workspace lockfile warnings
   experimental: {
     turbo: {
-      root: process.cwd(),
+      root: __dirname,
     },
   },
+  // Disable Next.js automatic trailing slash redirects
+  // This allows our route handler to process /api/ requests directly
+  skipTrailingSlashRedirect: true,
+  // Help with full URL normalization control in middleware/handlers
+  skipMiddlewareUrlNormalize: true,
 };
 
 export default withNextIntl(withMDX(nextConfig));

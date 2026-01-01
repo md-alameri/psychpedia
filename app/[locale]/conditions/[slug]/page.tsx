@@ -4,10 +4,13 @@ import { draftMode } from 'next/headers';
 import type { Metadata } from 'next';
 import type { Locale } from '@/lib/i18n/config';
 import { loadCondition, getAllConditionSlugs } from '@/lib/content/loader';
+import { fetchAllConditionSlugs } from '@/lib/cms';
 import EditorialMetadata from '@/components/content/EditorialMetadata';
 import AudienceTabs from '@/components/content/AudienceTabs';
 import ContentSection from '@/components/content/ContentSection';
 import MDXContent from '@/components/content/MDXContent';
+import RichTextRenderer from '@/components/content/RichTextRenderer';
+import CitationsSection from '@/components/content/CitationsSection';
 import MedicalDisclaimer from '@/components/content/MedicalDisclaimer';
 import ReportIssue from '@/components/content/ReportIssue';
 import LocaleUnavailableNotice from '@/components/content/LocaleUnavailableNotice';
@@ -18,8 +21,25 @@ interface ConditionPageProps {
   params: Promise<{ locale: Locale; slug: string }>;
 }
 
+export const revalidate = 60; // ISR: revalidate every 60 seconds
+
 export async function generateStaticParams() {
-  const slugs = getAllConditionSlugs();
+  // Try CMS first, fallback to local files
+  let slugs: string[] = [];
+  
+  if (process.env.CMS_URL) {
+    try {
+      const enSlugs = await fetchAllConditionSlugs('en');
+      const arSlugs = await fetchAllConditionSlugs('ar');
+      slugs = [...new Set([...enSlugs, ...arSlugs])];
+    } catch (error) {
+      console.warn('[generateStaticParams] CMS fetch failed, using local files:', error);
+      slugs = getAllConditionSlugs();
+    }
+  } else {
+    slugs = getAllConditionSlugs();
+  }
+  
   const params: { locale: Locale; slug: string }[] = [];
   
   for (const slug of slugs) {
@@ -72,8 +92,9 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
   }
   
   // Production draft check: drafts are only accessible with preview mode enabled
+  const draft = await draftMode();
   if (content.metadata.status === 'draft' && 
-      !draftMode().isEnabled && 
+      !draft.isEnabled && 
       process.env.NODE_ENV === 'production') {
     notFound();
   }
@@ -134,24 +155,51 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
           
           <AudienceTabs defaultDepth="basic" />
           
-          {rawContent ? (
-            <MDXContent source={rawContent} />
-          ) : (
-            <div>
-              {Object.values(sections).map((section) => (
-                <ContentSection
-                  key={section.id}
-                  id={section.id}
-                  title={section.title}
-                  depth={section.depth}
-                  gated={section.gated}
-                >
-                  <p className="text-text-muted">
-                    Content for this section is coming soon.
-                  </p>
-                </ContentSection>
-              ))}
-            </div>
+          {(() => {
+            // Check if content is richText JSON (object) or markdown string
+            const rawContentTyped = rawContent as any;
+            const isRichText = rawContentTyped && typeof rawContentTyped === 'object' && 'root' in rawContentTyped;
+            const bodyContent = (content as any).bodyPublic || rawContent;
+            // Always hide dosing for public audience (server-side, no hydration issues)
+            const hideDosing = true; // Public pages always hide dosing
+            
+            if (isRichText || (bodyContent && typeof bodyContent === 'object' && 'root' in bodyContent)) {
+              return (
+                <RichTextRenderer
+                  content={bodyContent || rawContent}
+                  locale={locale}
+                  audience="public"
+                  hideDosing={hideDosing}
+                />
+              );
+            }
+            
+            if (rawContent) {
+              return <MDXContent source={rawContent} />;
+            }
+            
+            return (
+              <div>
+                {Object.values(sections).map((section) => (
+                  <ContentSection
+                    key={section.id}
+                    id={section.id}
+                    title={section.title}
+                    depth={section.depth}
+                    gated={section.gated}
+                  >
+                    <p className="text-text-muted">
+                      Content for this section is coming soon.
+                    </p>
+                  </ContentSection>
+                ))}
+              </div>
+            );
+          })()}
+          
+          {/* Citations section - authoritative list from citations[] array */}
+          {metadata.citations && metadata.citations.length > 0 && (
+            <CitationsSection citations={metadata.citations} locale={locale} />
           )}
           
           <ReportIssue contentType="condition" contentSlug={slug} locale={locale} />

@@ -42,13 +42,18 @@ export default async function RootLayout({
   const headersList = await headers();
   const cookieStore = await cookies();
   
+  // Get locale from next-intl middleware header (set by next-intl middleware)
+  const nextIntlLocale = headersList.get('x-next-intl-locale');
   const headerLocale = headersList.get('x-app-locale');
-  const cookieLocale = cookieStore.get('APP_LOCALE')?.value;
+  const cookieLocale = cookieStore.get('NEXT_LOCALE')?.value || cookieStore.get('APP_LOCALE')?.value;
   const pathnameHeader = headersList.get('x-pathname');
   
   let locale: Locale = 'en';
   
-  if (headerLocale && locales.includes(headerLocale as Locale)) {
+  // Priority: next-intl header > custom header > cookie > pathname
+  if (nextIntlLocale && locales.includes(nextIntlLocale as Locale)) {
+    locale = nextIntlLocale as Locale;
+  } else if (headerLocale && locales.includes(headerLocale as Locale)) {
     locale = headerLocale as Locale;
   } else if (cookieLocale && locales.includes(cookieLocale as Locale)) {
     locale = cookieLocale as Locale;
@@ -56,7 +61,7 @@ export default async function RootLayout({
     if (pathnameHeader.startsWith('/ar')) {
       locale = 'ar';
     } else if (pathnameHeader.startsWith('/en')) {
-    locale = 'en';
+      locale = 'en';
     }
   }
   
@@ -65,6 +70,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning className={`${inter.variable} ${notoSansArabic.variable}`}>
       <body className="antialiased" suppressHydrationWarning>
+        {/* Suppress hydration warnings from browser extensions and metadata boundaries */}
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>

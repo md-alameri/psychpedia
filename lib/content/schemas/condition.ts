@@ -74,6 +74,13 @@ export const ConditionMetadataSchema = z.object({
   changelog: z.array(ChangelogEntrySchema).default([]),
   // Search synonyms
   synonyms: z.array(z.string()).default([]),
+  // Citations - authoritative list for QA/CI
+  citations: z.array(z.object({
+    label: z.string().optional(),
+    url: z.string().url().optional(),
+    sourceType: z.string().optional(),
+    year: z.number().optional(),
+  })).default([]),
 });
 
 export type ConditionMetadata = z.infer<typeof ConditionMetadataSchema>;

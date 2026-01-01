@@ -8,7 +8,8 @@ import { redirect } from 'next/navigation';
  * Usage: /api/exit-preview
  */
 export async function GET() {
-  draftMode().disable();
+  const draft = await draftMode();
+  draft.disable();
   
   // Redirect to home page
   redirect('/');

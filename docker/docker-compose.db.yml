@@ -1,0 +1,29 @@
+services:
+  db:
+    container_name: psychpedia-db
+    image: postgres:16-alpine
+    ports:
+      - "5440:5432"
+    environment:
+      POSTGRES_DB: psychpedia
+      POSTGRES_USER: psychpedia
+      POSTGRES_PASSWORD: psychpedia
+    volumes:
+      - psychpedia_db_data:/var/lib/postgresql/data
+    networks:
+      - psychpedia_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U psychpedia"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  psychpedia_db_data:
+    driver: local
+
+networks:
+  psychpedia_net:
+    driver: bridge
+

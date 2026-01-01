@@ -2,12 +2,14 @@ import { setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import type { Locale } from '@/lib/i18n/config';
 import { getAllConditionSlugs } from '@/lib/content/loader';
-import { loadCondition } from '@/lib/content/loader';
+import { fetchConditionsIndex } from '@/lib/cms';
 import ConditionsIndex from '@/components/content/ConditionsIndex';
 
 interface ConditionsPageProps {
   params: Promise<{ locale: Locale }>;
 }
+
+export const revalidate = 300; // ISR: revalidate every 5 minutes
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ar' }];
@@ -30,21 +32,44 @@ export default async function ConditionsPage({ params }: ConditionsPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   
-  // Load all conditions (only published)
-  const slugs = getAllConditionSlugs();
-  const conditions = await Promise.all(
-    slugs.map(async (slug) => {
-      const content = await loadCondition(slug, locale);
-      // Only include published content
-      if (content && content.metadata.status === 'published') {
-        return { ...content.metadata, slug };
-      }
-      return null;
-    })
-  );
+  // Try CMS first, fallback to local files
+  let conditions: Array<{ slug: string; title: string; description: string }> = [];
   
-  const validConditions = conditions.filter((c): c is NonNullable<typeof c> => c !== null);
+  if (process.env.NEXT_PUBLIC_CMS_URL || process.env.CMS_API_BASE) {
+    try {
+      conditions = await fetchConditionsIndex(locale);
+    } catch (error) {
+      console.warn('[ConditionsPage] CMS fetch failed, falling back to local files:', error);
+      // Fallback to local files
+      const slugs = getAllConditionSlugs();
+      const { loadCondition } = await import('@/lib/content/loader');
+      const localConditions = await Promise.all(
+        slugs.map(async (slug) => {
+          const content = await loadCondition(slug, locale);
+          if (content && content.metadata.status === 'published') {
+            return { slug, title: content.metadata.title, description: content.metadata.description };
+          }
+          return null;
+        })
+      );
+      conditions = localConditions.filter((c): c is NonNullable<typeof c> => c !== null);
+    }
+  } else {
+    // No CMS configured, use local files
+    const slugs = getAllConditionSlugs();
+    const { loadCondition } = await import('@/lib/content/loader');
+    const localConditions = await Promise.all(
+      slugs.map(async (slug) => {
+        const content = await loadCondition(slug, locale);
+        if (content && content.metadata.status === 'published') {
+          return { slug, title: content.metadata.title, description: content.metadata.description };
+        }
+        return null;
+      })
+    );
+    conditions = localConditions.filter((c): c is NonNullable<typeof c> => c !== null);
+  }
   
-  return <ConditionsIndex conditions={validConditions} locale={locale} />;
+  return <ConditionsIndex conditions={conditions as any} locale={locale} />;
 }
 

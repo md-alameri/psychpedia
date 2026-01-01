@@ -10,14 +10,33 @@ import { validateGovernanceMetadata } from './schemas/governance';
 import { getContentPath, readJSONFile, readMDXFile, CONTENT_DIR } from './utils';
 import { CONDITION_SECTIONS, createDefaultConditionSections } from './schemas/condition';
 import { MEDICATION_SECTIONS, createDefaultMedicationSections } from './schemas/medication';
+import {
+  fetchCondition as fetchConditionFromCMS,
+  fetchMedication as fetchMedicationFromCMS,
+  fetchGovernance as fetchGovernanceFromCMS,
+} from '@/lib/cms';
 
 /**
  * Load condition content for a given slug and locale
+ * Tries CMS first, falls back to local files
  */
 export async function loadCondition(
   slug: string,
   locale: Locale = 'en'
 ): Promise<ConditionContent | null> {
+  // Try CMS first if configured
+  if (process.env.CMS_URL) {
+    try {
+      const cmsContent = await fetchConditionFromCMS(locale, slug);
+      if (cmsContent) {
+        return cmsContent;
+      }
+    } catch (error) {
+      console.warn(`[loadCondition] CMS fetch failed for ${slug}, falling back to local files:`, error);
+    }
+  }
+
+  // Fallback to local files
   const paths = getContentPath('conditions', slug, locale);
   
   // Try locale-specific first, then fallback to root
@@ -94,11 +113,25 @@ export async function loadCondition(
 
 /**
  * Load medication content for a given slug and locale
+ * Tries CMS first, falls back to local files
  */
 export async function loadMedication(
   slug: string,
   locale: Locale = 'en'
 ): Promise<MedicationContent | null> {
+  // Try CMS first if configured
+  if (process.env.CMS_URL) {
+    try {
+      const cmsContent = await fetchMedicationFromCMS(locale, slug);
+      if (cmsContent) {
+        return cmsContent;
+      }
+    } catch (error) {
+      console.warn(`[loadMedication] CMS fetch failed for ${slug}, falling back to local files:`, error);
+    }
+  }
+
+  // Fallback to local files
   const paths = getContentPath('medications', slug, locale);
   
   // Try locale-specific first, then fallback to root
@@ -216,11 +249,25 @@ export function getAllMedicationSlugs(): string[] {
 
 /**
  * Load governance page content for a given slug and locale
+ * Tries CMS first, falls back to local files
  */
 export async function loadGovernance(
   slug: string,
   locale: Locale = 'en'
 ): Promise<GovernanceContent | null> {
+  // Try CMS first if configured
+  if (process.env.CMS_URL) {
+    try {
+      const cmsContent = await fetchGovernanceFromCMS(locale, slug);
+      if (cmsContent) {
+        return cmsContent;
+      }
+    } catch (error) {
+      console.warn(`[loadGovernance] CMS fetch failed for ${slug}, falling back to local files:`, error);
+    }
+  }
+
+  // Fallback to local files
   const governanceDir = join(CONTENT_DIR, 'governance', slug);
   
   // Try locale-specific first, then fallback to root

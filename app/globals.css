@@ -14,8 +14,15 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  [dir="rtl"] body {
+  /* Apply Arabic font when RTL direction is set */
+  [dir="rtl"] body,
+  [dir="rtl"] {
     @apply font-arabic;
+  }
+  
+  /* Ensure Arabic font is applied to all elements in RTL mode */
+  [dir="rtl"] * {
+    font-family: var(--font-noto-arabic), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans Arabic", "Arabic UI Display", sans-serif;
   }
 
   * {

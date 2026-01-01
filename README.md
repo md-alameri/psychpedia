@@ -41,7 +41,9 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+**Note**: Using Next.js 15.5.9 for Payload CMS compatibility. Payload 3.69.0 requires Next.js 15.x.
+
+Open [http://localhost:3001](http://localhost:3001) in your browser.
 
 The app will automatically redirect to `/en` or `/ar` based on your browser's language preference.
 

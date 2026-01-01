@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import type { Locale } from '@/lib/i18n/config';
 import { loadGovernance } from '@/lib/content/loader';
 import MDXContent from '@/components/content/MDXContent';
+import RichTextRenderer from '@/components/content/RichTextRenderer';
 import GovernanceLocaleNotice from '@/components/content/GovernanceLocaleNotice';
 
 interface AboutPageProps {
@@ -39,13 +40,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
     notFound();
   }
   
-  // Production draft check: drafts are only accessible with preview mode enabled
-  // Note: Governance pages are always published, but check for consistency
-  if (content.metadata.status === 'draft' && 
-      !draftMode().isEnabled && 
-      process.env.NODE_ENV === 'production') {
-    notFound();
-  }
+  // Governance pages are always published, no draft check needed
   
   return (
     <div className="min-h-screen bg-background">
@@ -68,7 +63,24 @@ export default async function AboutPage({ params }: AboutPageProps) {
             )}
           </header>
           
-          <MDXContent source={content.rawContent} />
+          {(() => {
+            // Check if content is richText JSON (object) or markdown string
+            const rawContent = content.rawContent as any;
+            const isRichText = rawContent && typeof rawContent === 'object' && 'root' in rawContent;
+            const bodyContent = (content as any).body || content.rawContent;
+            
+            if (isRichText || (bodyContent && typeof bodyContent === 'object' && 'root' in bodyContent)) {
+              return (
+                <RichTextRenderer
+                  content={bodyContent || content.rawContent}
+                  locale={locale}
+                  audience="public"
+                />
+              );
+            }
+            
+            return <MDXContent source={content.rawContent || ''} />;
+          })()}
         </article>
       </main>
     </div>
