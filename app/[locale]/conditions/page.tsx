@@ -9,11 +9,10 @@ interface ConditionsPageProps {
   params: Promise<{ locale: Locale }>;
 }
 
-export const revalidate = 300; // ISR: revalidate every 5 minutes
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export async function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'ar' }];
-}
+// Removed generateStaticParams to prevent build-time pre-rendering
 
 export async function generateMetadata({
   params,

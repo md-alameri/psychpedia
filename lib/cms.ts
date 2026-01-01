@@ -396,7 +396,7 @@ export async function fetchConditionsIndex(
     const url = new URL(`${API_BASE}/pages/`);
     url.searchParams.set('type', 'conditions.ConditionPage');
     url.searchParams.set('fields', 'title,description,meta.slug');
-    url.searchParams.set('limit', '100');
+    url.searchParams.set('limit', '100'); // Always include limit for stable URL
 
     if (filters?.search) {
       url.searchParams.set('search', filters.search);
@@ -407,20 +407,30 @@ export async function fetchConditionsIndex(
     });
 
     if (!response.ok) {
-      throw new Error(`CMS API error: ${response.status}`);
+      // Log but don't throw - return empty array for build-time safety
+      const errorMessage = formatFetchError(
+        new Error(`CMS API error: ${response.status}`),
+        url.toString()
+      );
+      console.warn('[CMS] Error fetching conditions index:', errorMessage);
+      return [];
     }
 
     const data: WagtailPagesResponse = await response.json();
+    // Ensure data.items exists and is an array
+    if (!data.items || !Array.isArray(data.items)) {
+      console.warn('[CMS] Invalid response format from conditions index');
+      return [];
+    }
     return data.items.map(item => ({
       slug: item.meta.slug,
       title: item.title,
       description: item.description || '',
     }));
   } catch (error) {
+    // Never throw - always return safe fallback
     const errorMessage = formatFetchError(error, `${API_BASE}/pages/`);
-    if (process.env.NODE_ENV === 'development' || isCMSExplicitlyConfigured()) {
-      console.error('[CMS] Error fetching conditions index:', errorMessage);
-    }
+    console.warn('[CMS] Error fetching conditions index:', errorMessage);
     return [];
   }
 }
