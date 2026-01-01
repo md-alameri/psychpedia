@@ -120,6 +120,27 @@ ${message}
  * Report issue API endpoint
  * Accepts content issue reports with rate limiting and optional GitHub integration
  */
+
+/**
+ * GET handler - returns 405 Method Not Allowed
+ * This endpoint only supports POST requests
+ */
+export async function GET() {
+  return NextResponse.json(
+    {
+      error: 'Method Not Allowed',
+      message: 'This endpoint only accepts POST requests',
+      allowedMethods: ['POST'],
+    },
+    {
+      status: 405,
+      headers: {
+        'Allow': 'POST',
+      },
+    }
+  );
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
@@ -146,7 +167,7 @@ export async function POST(request: NextRequest) {
     
     // Parse request body
     const body = await request.json();
-    const { slug, type, locale, message, email } = body;
+    const { slug, type, locale, message, email, url } = body;
     
     // Validate required fields
     if (!slug || !type || !locale || !message) {
@@ -198,6 +219,52 @@ export async function POST(request: NextRequest) {
       console.log(`  Message: ${message}`);
     }
     
+    // Create issue report in Wagtail CMS if configured
+    let cmsResult;
+    // Derive CMS base URL consistently
+    let cmsBase: string | undefined;
+    if (process.env.CMS_API_BASE) {
+      // Remove /api/v2 suffix if present
+      cmsBase = process.env.CMS_API_BASE.replace(/\/api\/v2\/?$/, '');
+    } else if (process.env.NEXT_PUBLIC_CMS_URL) {
+      cmsBase = process.env.NEXT_PUBLIC_CMS_URL;
+    }
+    
+    const issueReportToken = process.env.ISSUE_REPORT_TOKEN;
+    
+    if (cmsBase && issueReportToken) {
+      try {
+        const cmsUrl = `${cmsBase}/api/issue-reports`;
+        const cmsResponse = await fetch(cmsUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-PSYCHPEDIA-TOKEN': issueReportToken,
+          },
+          body: JSON.stringify({
+            pageType: type,
+            slug,
+            locale,
+            message,
+            email: email || undefined,
+          }),
+        });
+
+        if (cmsResponse.ok) {
+          cmsResult = await cmsResponse.json();
+          console.log('[Report Issue] Created CMS entry:', cmsResult.id);
+        } else {
+          const errorText = await cmsResponse.text();
+          console.warn('[Report Issue] CMS creation failed:', cmsResponse.status, errorText);
+        }
+      } catch (error) {
+        // Don't fail the request if CMS is unavailable
+        console.warn('[Report Issue] CMS error:', error instanceof Error ? error.message : String(error));
+      }
+    } else if (cmsBase && !issueReportToken) {
+      console.warn('[Report Issue] CMS base URL configured but ISSUE_REPORT_TOKEN missing, skipping CMS submission');
+    }
+
     // Create GitHub issue if configured
     let githubResult;
     if (process.env.NODE_ENV === 'production' && process.env.GH_TOKEN) {
