@@ -1,0 +1,34 @@
+{
+  "slug": "depressive-disorder-due-to-medical-condition",
+  "title": "Depressive Disorder Due to Another Medical Condition",
+  "description": "A comprehensive guide to Depressive Disorder Due to Another Medical Condition, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Depressive Disorder Due to Another Medical Condition is a mental health condition classified in the DSM-5 under Depressive Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Depressive Disorders",
+  "tags": [
+    "depressive disorder due to medical condition",
+    "depressive disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F06.3"
+}

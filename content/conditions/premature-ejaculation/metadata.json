@@ -1,0 +1,34 @@
+{
+  "slug": "premature-ejaculation",
+  "title": "Premature (Early) Ejaculation",
+  "description": "A comprehensive guide to Premature (Early) Ejaculation, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Premature (Early) Ejaculation is a mental health condition classified in the DSM-5 under Sexual Dysfunctions. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Sexual Dysfunctions",
+  "tags": [
+    "premature ejaculation",
+    "sexual dysfunctions"
+  ],
+  "relatedConditions": [],
+  "icd10": "F52.4"
+}

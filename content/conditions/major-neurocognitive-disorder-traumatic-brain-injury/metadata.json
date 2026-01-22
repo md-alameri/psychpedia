@@ -1,0 +1,34 @@
+{
+  "slug": "major-neurocognitive-disorder-traumatic-brain-injury",
+  "title": "Major Neurocognitive Disorder Due to Traumatic Brain Injury",
+  "description": "A comprehensive guide to Major Neurocognitive Disorder Due to Traumatic Brain Injury, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Major Neurocognitive Disorder Due to Traumatic Brain Injury is a mental health condition classified in the DSM-5 under Neurocognitive Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Neurocognitive Disorders",
+  "tags": [
+    "major neurocognitive disorder traumatic brain injury",
+    "neurocognitive disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F02.80"
+}

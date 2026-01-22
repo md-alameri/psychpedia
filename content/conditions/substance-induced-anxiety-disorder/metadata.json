@@ -1,0 +1,34 @@
+{
+  "slug": "substance-induced-anxiety-disorder",
+  "title": "Substance/Medication-Induced Anxiety Disorder",
+  "description": "A comprehensive guide to Substance/Medication-Induced Anxiety Disorder, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Substance/Medication-Induced Anxiety Disorder is a mental health condition classified in the DSM-5 under Anxiety Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Anxiety Disorders",
+  "tags": [
+    "substance induced anxiety disorder",
+    "anxiety disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "Variable"
+}

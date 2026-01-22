@@ -1,0 +1,34 @@
+{
+  "slug": "other-specified-mental-disorder",
+  "title": "Other Specified Mental Disorder",
+  "description": "A comprehensive guide to Other Specified Mental Disorder, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Other Specified Mental Disorder is a mental health condition classified in the DSM-5 under Other Mental Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Other Mental Disorders",
+  "tags": [
+    "other specified mental disorder",
+    "other mental disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F99"
+}

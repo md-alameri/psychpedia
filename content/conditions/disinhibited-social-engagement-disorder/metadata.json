@@ -1,0 +1,34 @@
+{
+  "slug": "disinhibited-social-engagement-disorder",
+  "title": "Disinhibited Social Engagement Disorder",
+  "description": "A comprehensive guide to Disinhibited Social Engagement Disorder, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Disinhibited Social Engagement Disorder is a mental health condition classified in the DSM-5 under Trauma- and Stressor-Related Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Trauma- and Stressor-Related Disorders",
+  "tags": [
+    "disinhibited social engagement disorder",
+    "trauma- and stressor-related disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F94.2"
+}

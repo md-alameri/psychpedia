@@ -1,0 +1,34 @@
+{
+  "slug": "trichotillomania",
+  "title": "Trichotillomania (Hair-Pulling Disorder)",
+  "description": "A comprehensive guide to Trichotillomania (Hair-Pulling Disorder), including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Trichotillomania (Hair-Pulling Disorder) is a mental health condition classified in the DSM-5 under Obsessive-Compulsive and Related Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Obsessive-Compulsive and Related Disorders",
+  "tags": [
+    "trichotillomania",
+    "obsessive-compulsive and related disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F63.3"
+}

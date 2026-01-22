@@ -1,0 +1,34 @@
+{
+  "slug": "ocd-due-to-medical-condition",
+  "title": "Obsessive-Compulsive and Related Disorder Due to Another Medical Condition",
+  "description": "A comprehensive guide to Obsessive-Compulsive and Related Disorder Due to Another Medical Condition, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Obsessive-Compulsive and Related Disorder Due to Another Medical Condition is a mental health condition classified in the DSM-5 under Obsessive-Compulsive and Related Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Obsessive-Compulsive and Related Disorders",
+  "tags": [
+    "ocd due to medical condition",
+    "obsessive-compulsive and related disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F06.8"
+}

@@ -1,0 +1,34 @@
+{
+  "slug": "caffeine-withdrawal",
+  "title": "Caffeine Withdrawal",
+  "description": "A comprehensive guide to Caffeine Withdrawal, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Caffeine Withdrawal is a mental health condition classified in the DSM-5 under Substance-Related and Addictive Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Substance-Related and Addictive Disorders",
+  "tags": [
+    "caffeine withdrawal",
+    "substance-related and addictive disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F15.93"
+}

@@ -1,0 +1,34 @@
+{
+  "slug": "bipolar-i-disorder",
+  "title": "Bipolar I Disorder",
+  "description": "A comprehensive guide to Bipolar I Disorder, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Bipolar I Disorder is a mental health condition classified in the DSM-5 under Bipolar and Related Disorders. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Bipolar and Related Disorders",
+  "tags": [
+    "bipolar i disorder",
+    "bipolar and related disorders"
+  ],
+  "relatedConditions": [],
+  "icd10": "F31"
+}

@@ -1,0 +1,34 @@
+{
+  "slug": "gender-dysphoria-adolescents-adults",
+  "title": "Gender Dysphoria in Adolescents and Adults",
+  "description": "A comprehensive guide to Gender Dysphoria in Adolescents and Adults, including diagnosis, management, and clinical considerations based on DSM-5 criteria.",
+  "editorial": {
+    "lastReviewed": "2024-01-15",
+    "reviewer": {
+      "name": "Dr. Clinical Editor",
+      "role": "Consultant Psychiatrist",
+      "credentials": [
+        "MBBS",
+        "MRCPsych",
+        "MD"
+      ]
+    },
+    "evidenceStrength": "guideline",
+    "evidenceLevel": "A",
+    "version": 1
+  },
+  "locale": "en",
+  "audienceLevel": {
+    "public": true,
+    "student": true,
+    "clinician": true
+  },
+  "publicSummary": "Gender Dysphoria in Adolescents and Adults is a mental health condition classified in the DSM-5 under Gender Dysphoria. This content provides educational information based on current clinical guidelines and is not a substitute for professional medical advice.",
+  "category": "Gender Dysphoria",
+  "tags": [
+    "gender dysphoria adolescents adults",
+    "gender dysphoria"
+  ],
+  "relatedConditions": [],
+  "icd10": "F64.0"
+}
